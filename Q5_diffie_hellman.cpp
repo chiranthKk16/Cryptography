@@ -24,7 +24,7 @@ int main() {
     int x = 4;  //xPrivate key for Alice
     int y = 3;  //yPrivate key for bob
     
-    cout<<"Given,\n g=9, p=23, x=4, y=3"<<endl;
+    cout<<"Given,\ng=9, p=23, x=4, y=3"<<endl;
   
     int SymmetricKey = generate_symmetric_key(g, p, x, y);
 
