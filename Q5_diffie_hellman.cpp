@@ -1,47 +1,17 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool checkPrime(int num){
-    if(num < 2) return false;
-    else if(num == 2) return true;
-    else if(num > 2){
-        bool prime = true;
-        for(int i=2; i<num/2; i++){
-            if(num % i == 0 && num != i) prime = false;
-        }
-        return prime;
-    }
-}
-
-bool checkPrimitive(int publicKeyG, int publicKeyP){
-    vector<double> vec;
+int generate_symmetric_key(int g, int p, int x, int y) {
     
-    for(int i=1; i<publicKeyP; i++){
-        vec.push_back(fmod((double) (pow(publicKeyG, i)), (double) publicKeyP));    
-    }
-    
-    for(int i=1; i<publicKeyP; i++){
-        if(count(vec.begin(), vec.end(), i) > 1){
-            return false;
-        }
-        return true;
-    }
-    
-    
-}
-
-int generate_symmetric_key(int publicKeyG, int pubicKeyP, int privateKeyAlice, int privateKeyBob) {
-    
-    int A = fmod(pow(publicKeyG, privateKeyAlice), pubicKeyP);
-    int B = fmod(pow(publicKeyG, privateKeyBob), pubicKeyP);
+    int A = fmod(pow(g, x), p);
+    int B = fmod(pow(g, y), p);
 
     // Calculate symmetric key
-    int keyA = fmod(pow(B, privateKeyAlice), pubicKeyP);
-    int keyB = fmod(pow(A, privateKeyBob), pubicKeyP);
+    int keyA = fmod(pow(B, x), p);
+    int keyB = fmod(pow(A, y), p);
 
   
-    if (keyA == keyB) {
-        cout<<"Keys exchanged successfully"<<endl;
+    if (keyA == keyB) {       
         return keyA;
     } else {
         return -1;
@@ -49,40 +19,14 @@ int generate_symmetric_key(int publicKeyG, int pubicKeyP, int privateKeyAlice, i
 }
 
 int main() {
-    int pubicKeyP = 23;
-    int publicKeyG = 9;  
-    int privateKeyAlice = 4;  //xPrivate key for Alice
-    int privateKeyBob = 3;  //yPrivate key for bob
+    int p = 23;
+    int g = 9;  
+    int x = 4;  //xPrivate key for Alice
+    int y = 3;  //yPrivate key for bob
     
-    while(1){
-        
-        cout<<"Enter public key P (prime number): ";
-        cin>>pubicKeyP;
-        
-        if(checkPrime(pubicKeyP) == false){
-            cout<<"Public key P should be a prime number!";
-        }else break;
-        
-    };
-    
-    while(1){
-        cout<<"Enter public key G (primitive root of P): ";
-        cin>>publicKeyG;
-        
-        if(checkPrimitive(publicKeyG, pubicKeyP) == false){
-            cout<<"Public key G should be a primitive root of P!";
-        }else break;
-    }
-    
-    cout<<"Enter private key of Alice: ";
-    cin>>privateKeyAlice;
-    
-    cout<<"Enter private key Bob: ";
-    cin>>privateKeyBob;
-
+    cout<<"Given,\n g=9, p=23, x=4, y=3"<<endl;
   
-    int SymmetricKey = generate_symmetric_key(publicKeyG, pubicKeyP, privateKeyAlice, privateKeyBob);
-
+    int SymmetricKey = generate_symmetric_key(g, p, x, y);
 
     if (SymmetricKey != -1) {
         cout<<"Symmetric Key generated: "<<SymmetricKey;
